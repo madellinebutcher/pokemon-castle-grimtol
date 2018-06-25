@@ -19,7 +19,7 @@ namespace CastleGrimtol.Project
             Room CaveOnyx = new Room("Cave Onyx", "Diglett happily eats the berry. You [Take Masterball] from the top of his head. Squirtle is teasing Charmander and makes him angry. Charmander uses flamethrower at Squirtle who dodges before being hit and Charmander's flamerthrower hit this huge rock instead. All of a sudden the rock moves. It turns around and you are staring right into the face of Onyx. He does not look too happy. All your pokemon are scared.[In your backpack you have Masterball or Forward(run) or Back(go)]. [Forward, Back]");
             Room CaveVileplum = new Room("Cave Vileplum", "Squirtle gets some spunk in him and he uses watergun on Onyx but that just makes him more angry. Onyx charges you and your pokemon. You all run away from Onyx and jump out of the way as Onyx boulders his way through the cave wall. You look into the new passage way and see all these mushrooms. Do you go [Forward or Back]");
             Room CaveJigglypuff = new Room("Cave Jigglypuff", "You walk through all the mushrooms slowly and notice that they are Vileplums. Bulbasaur touches one and a puff of sleeping powder was sprayed onto his face. You pick him up and notice a Jigglypuff standing on a rock. It smiles at you and starts to sing its song. You get groggy and everything turns black. When you come to all your pokemon are asleep around you and has marker drawings on their face. You seem to have some on your face too! Seems like Jigglypuff did not like you sleeping during her performance. You notice that there is a little Chesto Berry tree blooming next to the spring. You feed your pokemon the Chesto Berry and they start to wake up. You notice that there is another entrance to the spring, but there are two entrances [Left or Right]");
-            Room TeamRocket = new Room("Team Rocket", "You took the left entrance and you see Team Rocket! You told Charmande to do flamethrower, Squirtle to do watergun and Bulbasaur to do razor leaf. The attacks hit Team Rocket and it dazes them for a bit. You run over and release Pikachu from its cage. You tell Pikachu to do Thunderbolt at Team Rocket. It was a direct hit and they go flying off! 'Looks like we are blasting off again'. Suddenly a little pokemon floats right on top of you and giggles. 'Mew' it says! What did you want to do? [Master Pokeball]");
+            Room TeamRocket = new Room("Team Rocket", "You took the left entrance and you see Team Rocket! You told Charmander to do flamethrower, Squirtle to do watergun and Bulbasaur to do razor leaf. The attacks hit Team Rocket and it dazes them for a bit. You run over and release Pikachu from its cage. You tell Pikachu to do Thunderbolt at Team Rocket. It was a direct hit and they go flying off! 'Looks like we are blasting off again'. Suddenly a little pokemon floats right on top of you and giggles. 'Mew' it says! What did you want to do? [Master Pokeball]");
             Room Nothing = new Room("Nothing", "You took the right entrance but there is no one there. You see lots of eyes appear above you! It seems like a whole collection of Noibats! Your pokemon can't see all the Noibats. What do you want to do? There doesn't seem to be an exit. [Go Back].");
 
             Room CaveRight = new Room("Cave Right", "You decide to go right. It is very dark. You ask Charmander to lead the way with his tail. The pokemon start to smell something. They lead you to a entrance to the left and there seems to be a stack of yummy berries behind a boulder. You let them eat some. Go [Left or Back].");
@@ -61,7 +61,7 @@ namespace CastleGrimtol.Project
             //Adding Items to rooms
 
             //CaveLeft
-            CaveOnyx.Items.Add(Masterball);
+            CaveOnyx.addItem(Masterball);
 
 
 
@@ -128,6 +128,7 @@ namespace CastleGrimtol.Project
                     Console.Clear();
                     CurrentRoom = CurrentRoom.ChangeRoom("back");
                     Look();
+
                     break;
                 case "take":
                 case "t":
@@ -137,9 +138,13 @@ namespace CastleGrimtol.Project
                 case "u":
                     UseItem(input2);
                     break;
+                case "look":
+                    Look();
+                    break;
                 case "reset":
                     Reset();
                     break;
+
             }
 
         }
@@ -171,17 +176,21 @@ namespace CastleGrimtol.Project
 
         public void TakeItem(string itemName)
         {
-            Item item = CurrentRoom.Items.Find(i => i.Name.ToLower().Contains(itemName));
+            Item item = CurrentRoom.Items.Find(i =>
+            {
+                return i.Name.ToLower() == itemName.Trim();
+            }
+            );
 
-            if (CurrentRoom.Items.Contains(item))
+            if (item == null)
+            {
+                Console.WriteLine("There is nothing to take in this room.");
+            }
+            else
             {
                 Console.WriteLine($"You picked up {item.Name}.");
                 CurrentPlayer.Inventory.Add(item);
                 CurrentRoom.Items.Remove(item);
-            }
-            else
-            {
-                Console.WriteLine("There is nothing to take in this room.");
             }
         }
 
@@ -190,33 +199,102 @@ namespace CastleGrimtol.Project
         public void UseItem(string itemName)
         {
             Item item = CurrentPlayer.Inventory.Find(i => i.Name.ToLower().Contains(itemName));
+
             if (item != null)
             {
-                if (itemName == "Masterball") 
+                if (CurrentRoom.Name != "Team Rocket")
                 {
-                    CurrentPlayer.Masterball = !CurrentPlayer.Masterball;
+                    Console.WriteLine("You wasted your Masterball.\n");
                     CurrentPlayer.Inventory.Remove(item);
                 }
+                else
+                {
+                    Win();
+                }
 
-                Console.WriteLine("You throw the master ball. It directly hits mew on the back.\n");
-                Console.WriteLine("CONGRATULATIONS YOU CAUGHT MEW!\n");
             }
-
-
-            else
+            else if (item == null)
             {
-                Console.WriteLine("You don't have that item in your inventory.\n");
+                if (CurrentRoom.Name == "Team Rocket")
+                {
+                    bool valid = false;
+                    while (!valid)
+                    {
+                        Console.WriteLine("You don't have the Masterball. Do you want to try again? Y/N");
+                        string input = Console.ReadLine();
+                        input.ToLower();
+
+                        switch (input)
+                        {
+                            case "y":
+                            case "yes":
+                                Reset();
+                                valid = true;
+                                break;
+                            case "n":
+                            case "no":
+                                Quit();
+                                valid = true;
+                                break;
+                            default:
+                                Console.WriteLine("Please make a valid choice.");
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("You don't have this in your backpack.");
+
+                }
             }
 
-        }
-        private static void NewMethod()
-        {
-            ;
-        }
 
+        }
+        // private static void NewMethod()
+        // {
+        //     ;
+        // }
+        public void Win()
+        {
+            bool valid = false;
+            while (!valid)
+            {
+                Console.WriteLine("You throw the master ball. It directly hits mew on the back.\n");
+                Console.WriteLine("CONGRATULATIONS YOU CAUGHT MEW! AND SAVED PIKACHU!\n");
+                Console.WriteLine("Do you want to try again? Y/N");
+                string input = Console.ReadLine();
+                input.ToLower();
+
+                switch (input)
+                {
+                    case "y":
+                    case "yes":
+                        Reset();
+                        valid = true;
+                        break;
+                    case "n":
+                    case "no":
+                        Quit();
+                        valid = true;
+                        break;
+                    default:
+                        Console.WriteLine("Please make a valid choice.");
+                        break;
+                }
+            }
+        }
         public void Look()
         {
+            if (CurrentRoom.Items.Count > 0)
+            {
+                Console.WriteLine("Items in Room");
+                CurrentRoom.Items.ForEach(i =>
+                {
 
+                    Console.WriteLine(i.Name);
+                });
+            }
             Console.WriteLine(CurrentRoom.Description);
 
         }
@@ -224,7 +302,7 @@ namespace CastleGrimtol.Project
         //Quit Game
         public void Quit()
         {
-
+            Playing = false;
         }
 
         //Reset Game
