@@ -192,20 +192,20 @@ namespace CastleGrimtol.Project
             Item item = CurrentPlayer.Inventory.Find(i => i.Name.ToLower().Contains(itemName));
             if (item != null)
             {
-                if (itemName == "Masterball") NewMethod();
+                if (itemName == "Masterball") 
                 {
                     CurrentPlayer.Masterball = !CurrentPlayer.Masterball;
                     CurrentPlayer.Inventory.Remove(item);
                 }
 
-                Console.WriteLine("You throw the master ball.\n");
+                Console.WriteLine("You throw the master ball. It directly hits mew on the back.\n");
                 Console.WriteLine("CONGRATULATIONS YOU CAUGHT MEW!\n");
             }
 
 
             else
             {
-                System.Console.WriteLine("You don't have that item in your inventory.\n");
+                Console.WriteLine("You don't have that item in your inventory.\n");
             }
 
         }
