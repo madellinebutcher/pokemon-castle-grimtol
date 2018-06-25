@@ -175,7 +175,7 @@ namespace CastleGrimtol.Project
 
             if (CurrentRoom.Items.Contains(item))
             {
-                Console.WriteLine($"You picked up {item.Name}. You put it in your backpack. Throughout the game I will let you know what is in your backpack.");
+                Console.WriteLine($"You picked up {item.Name}.");
                 CurrentPlayer.Inventory.Add(item);
                 CurrentRoom.Items.Remove(item);
             }
