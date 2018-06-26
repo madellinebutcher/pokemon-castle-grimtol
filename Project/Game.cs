@@ -79,6 +79,7 @@ namespace CastleGrimtol.Project
 
         public void Guide()
         {
+            Console.WriteLine("GUIDE");
             Console.WriteLine("Type 'Help' to acces the game guide");
             Console.WriteLine("Type 'Left' to go Left");
             Console.WriteLine("Type 'Right' to go Right");
@@ -87,7 +88,7 @@ namespace CastleGrimtol.Project
             Console.WriteLine("Type 'Take <ItemName>' to put item in your backpack");
             Console.WriteLine("Type 'Use <ItemName>' to go use items you have in your backpack");
             System.Console.WriteLine("Type 'Quit' to exit the game.");
-            System.Console.WriteLine("Type 'Inventory' to see what items you have.");
+            System.Console.WriteLine("Type 'Inventory' to see what items you have.\n");
         }
 
         //Player Command Inputs
@@ -152,7 +153,7 @@ namespace CastleGrimtol.Project
                     break;
                 case "inventory":
                 case "i":
-                    Console.WriteLine(CurrentPlayer.Inventory);
+                    LookInventory();
                     break;
 
             }
@@ -161,10 +162,10 @@ namespace CastleGrimtol.Project
 
         public void Play()
         {
-            Guide();
-            Console.Clear();
+            
             Setup();
             Console.Clear();
+            Guide();
             //intro
             Console.WriteLine("Ash and his pokemon (Pikachu, Charmander, Bulbasuar & Squirtle) are camped out in a cave for the night.\n");
             Console.WriteLine("All of a sudden you hear the phrase that pricks your hairs up. 'Prepare for Trouble! And make it Double!'...\n");
@@ -172,13 +173,14 @@ namespace CastleGrimtol.Project
             Console.WriteLine("You did not see Meowth anywhere with Jesse and James. Out of nowhere Meowth grabs Pikachu with a device that looks to be a huge rubberhand. He carries Pikachu into a non-electrical cage.\n");
 
             Console.WriteLine(CurrentRoom.Description);
-
+            
             while (Playing)
             {
 
                 UserCommand();
                 //input
                 //action /SWITCH
+                
             }
 
         }
@@ -307,6 +309,24 @@ namespace CastleGrimtol.Project
                 });
             }
             Console.WriteLine(CurrentRoom.Description);
+
+        }
+
+        public void LookInventory()
+        {
+            if (CurrentPlayer.Inventory.Count > 0)
+            {
+                Console.WriteLine("Items in your Bag");
+                CurrentPlayer.Inventory.ForEach(i =>
+                {
+
+                    Console.WriteLine($"{i.Name}");
+                    
+                });
+            }else{
+                Console.WriteLine("No Items in your Bag.");
+            }
+            
 
         }
 
