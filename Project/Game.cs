@@ -20,7 +20,7 @@ namespace CastleGrimtol.Project
             Room CaveVileplum = new Room("Cave Vileplum", "Squirtle gets some spunk in him and he uses watergun on Onyx but that just makes him more angry. Onyx charges you and your pokemon. You all run away from Onyx and jump out of the way as Onyx boulders his way through the cave wall. You look into the new passage way and see all these mushrooms. Do you go [Forward or Back]");
             Room CaveJigglypuff = new Room("Cave Jigglypuff", "You walk through all the mushrooms slowly and notice that they are Vileplums. Bulbasaur touches one and a puff of sleeping powder was sprayed onto his face. You pick him up and notice a Jigglypuff standing on a rock. It smiles at you and starts to sing its song. You get groggy and everything turns black. When you come to all your pokemon are asleep around you and has marker drawings on their face. You seem to have some on your face too! Seems like Jigglypuff did not like you sleeping during her performance. You notice that there is a little Chesto Berry tree blooming next to the spring. You feed your pokemon the Chesto Berry and they start to wake up. You notice that there is another entrance to the spring, but there are two entrances [Left or Right]");
             Room TeamRocket = new Room("Team Rocket", "You took the left entrance and you see Team Rocket! You told Charmander to do flamethrower, Squirtle to do watergun and Bulbasaur to do razor leaf. The attacks hit Team Rocket and it dazes them for a bit. You run over and release Pikachu from its cage. You tell Pikachu to do Thunderbolt at Team Rocket. It was a direct hit and they go flying off! 'Looks like we are blasting off again'. Suddenly a little pokemon floats right on top of you and giggles. 'Mew' it says! What did you want to do? [Master Pokeball]");
-            Room Nothing = new Room("Nothing", "You took the right entrance but there is no one there. You see lots of eyes appear above you! It seems like a whole collection of Noibats! Your pokemon can't see all the Noibats. What do you want to do? There doesn't seem to be an exit. [Go Back].");
+            Room Nothing = new Room("Nothing", "You took the right entrance but there is no one there. You see lots of eyes appear above you! It seems like a whole collection of Noibats! Your pokemon can't see all the Noibats. There doesn't seem to be an exit. [Go Back].");
 
             Room CaveRight = new Room("Cave Right", "You decide to go right. It is very dark. You ask Charmander to lead the way with his tail. The pokemon start to smell something. They lead you to a entrance to the left and there seems to be a stack of yummy berries behind a boulder. You let them eat some. Go [Left or Back].");
 
@@ -86,6 +86,8 @@ namespace CastleGrimtol.Project
             Console.WriteLine("Type 'Back' to go Back to the previous room you were in");
             Console.WriteLine("Type 'Take <ItemName>' to put item in your backpack");
             Console.WriteLine("Type 'Use <ItemName>' to go use items you have in your backpack");
+            System.Console.WriteLine("Type 'Quit' to exit the game.");
+            System.Console.WriteLine("Type 'Inventory' to see what items you have.");
         }
 
         //Player Command Inputs
@@ -144,6 +146,14 @@ namespace CastleGrimtol.Project
                 case "reset":
                     Reset();
                     break;
+                case "quit":
+                case "q":
+                    Quit();
+                    break;
+                case "inventory":
+                case "i":
+                    Console.WriteLine(CurrentPlayer.Inventory);
+                    break;
 
             }
 
@@ -154,6 +164,7 @@ namespace CastleGrimtol.Project
             Guide();
             Console.Clear();
             Setup();
+            Console.Clear();
             //intro
             Console.WriteLine("Ash and his pokemon (Pikachu, Charmander, Bulbasuar & Squirtle) are camped out in a cave for the night.\n");
             Console.WriteLine("All of a sudden you hear the phrase that pricks your hairs up. 'Prepare for Trouble! And make it Double!'...\n");
